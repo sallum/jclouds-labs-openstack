@@ -23,6 +23,7 @@ import static org.testng.Assert.assertTrue;
 
 import javax.ws.rs.core.MediaType;
 
+import org.jclouds.apis.ApiMetadata;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;
 import org.jclouds.io.Payloads;
@@ -34,6 +35,7 @@ import org.jclouds.openstack.glance.v1_0.options.UpdateImageOptions;
 import org.jclouds.openstack.glance.v1_0.parse.ParseImageDetailsTest;
 import org.jclouds.openstack.glance.v1_0.parse.ParseImagesInDetailTest;
 import org.jclouds.openstack.glance.v1_0.parse.ParseImagesTest;
+import org.jclouds.openstack.glance.v1_0.GlanceApiMetadata;
 import org.jclouds.rest.AuthorizationException;
 import org.jclouds.rest.ResourceNotFoundException;
 import org.jclouds.util.Strings2;
@@ -57,7 +59,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
 
 
       HttpResponse listResponse = HttpResponse.builder().statusCode(200)
-            .payload(payloadFromResource("/images.json")).build();
+            .payload(payloadFromResource("/images_v1.json")).build();
 
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
             responseWithKeystoneAccess, list, listResponse);
@@ -90,7 +92,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
 
 
       HttpResponse listInDetailResponse = HttpResponse.builder().statusCode(200)
-            .payload(payloadFromResource("/images_detail.json")).build();
+            .payload(payloadFromResource("/images_detail_v1.json")).build();
 
       GlanceApi apiWhenExistInDetail = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
             responseWithKeystoneAccess, listInDetail, listInDetailResponse);
@@ -190,7 +192,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
             .payload(payloadFromStringWithContentType("somedata", MediaType.APPLICATION_OCTET_STREAM)).build();
 
       HttpResponse createResponse = HttpResponse.builder().statusCode(200)
-            .payload(payloadFromResource("/image.json")).build();
+            .payload(payloadFromResource("/image_v1.json")).build();
       
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
             responseWithKeystoneAccess, get, createResponse);
@@ -211,7 +213,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
             .payload(payloadFromStringWithContentType("somedata", MediaType.APPLICATION_OCTET_STREAM)).build();
 
       HttpResponse createResponse = HttpResponse.builder().statusCode(403)
-            .payload(payloadFromResource("/image.json")).build();
+            .payload(payloadFromResource("/image_v1.json")).build();
 
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
             responseWithKeystoneAccess, get, createResponse);
@@ -229,7 +231,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
             .addHeader("X-Auth-Token", authToken).build();
 
       HttpResponse createResponse = HttpResponse.builder().statusCode(200)
-            .payload(payloadFromResource("/image.json")).build();
+            .payload(payloadFromResource("/image_v1.json")).build();
 
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
             responseWithKeystoneAccess, get, createResponse);
@@ -248,7 +250,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
             .addHeader("X-Auth-Token", authToken).build();
 
       HttpResponse createResponse = HttpResponse.builder().statusCode(403)
-            .payload(payloadFromResource("/image.json")).build();
+            .payload(payloadFromResource("/image_v1.json")).build();
 
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
             responseWithKeystoneAccess, get, createResponse);
@@ -275,7 +277,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
             .build();
 
       HttpResponse updateResponse = HttpResponse.builder().statusCode(200)
-            .payload(payloadFromResource("/image.json")).build();
+            .payload(payloadFromResource("/image_v1.json")).build();
 
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
             responseWithKeystoneAccess, get, updateResponse);
@@ -328,7 +330,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
             .build();
 
       HttpResponse updateResponse = HttpResponse.builder().statusCode(200)
-            .payload(payloadFromResource("/image.json")).build();
+            .payload(payloadFromResource("/image_v1.json")).build();
 
 
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
@@ -352,7 +354,7 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
             .build();
 
       HttpResponse updateResponse = HttpResponse.builder().statusCode(200)
-            .payload(payloadFromResource("/image.json")).build();
+            .payload(payloadFromResource("/image_v1.json")).build();
 
 
       GlanceApi apiWhenExist = requestsSendResponses(keystoneAuthWithUsernameAndPassword,
@@ -416,5 +418,10 @@ public class ImageApiExpectTest extends BaseGlanceApiExpectTest {
       assertEquals(apiWhenExist.getConfiguredZones(), ImmutableSet.of("az-1.region-a.geo-1"));
 
       assertFalse(apiWhenExist.getImageApiForZone("az-1.region-a.geo-1").delete("fcc451d0-f6e4-4824-ad8f-70ec12326d07"));
+   }
+   
+   @Override
+   protected ApiMetadata createApiMetadata() {
+      return new GlanceApiMetadata();
    }
 }

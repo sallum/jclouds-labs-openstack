@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.glance.v1_0.internal;
+package org.jclouds.openstack.glance.v2_0.internal;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;
@@ -24,7 +24,7 @@ import org.jclouds.rest.internal.BaseRestApiExpectTest;
 /**
  * Base class for writing Glance Expect tests
  * 
- * @author Adrian Cole
+ * @author Ignacio Mulas
  */
 public class BaseGlanceExpectTest<T> extends BaseRestApiExpectTest<T> {
    protected HttpRequest keystoneAuthWithUsernameAndPassword;
@@ -36,7 +36,7 @@ public class BaseGlanceExpectTest<T> extends BaseRestApiExpectTest<T> {
    protected HttpResponse unmatchedExtensionsOfGlanceResponse;
 
    public BaseGlanceExpectTest() {
-      provider = "openstack-glance-v1";
+      provider = "openstack-glance-v2";
       keystoneAuthWithUsernameAndPassword = KeystoneFixture.INSTANCE.initialAuthWithUsernameAndPasswordAndTenantName(identity,
             credential);
       keystoneAuthWithAccessKeyAndSecretKey = KeystoneFixture.INSTANCE.initialAuthWithAccessKeyAndSecretKeyAndTenantName(identity,
